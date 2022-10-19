@@ -1,9 +1,6 @@
 using UniApp.Models;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.TestModels.ConferencePlanner;
 
 namespace UniApp;
 
@@ -20,6 +17,7 @@ public class Startup
    {
       services.AddSingleton<IRepository, Repository>();
       services.AddControllers();
+      services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
    }
 
    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
