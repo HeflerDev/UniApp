@@ -1,11 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.TestModels.AspNetIdentity;
+using Microsoft.EntityFrameworkCore.TestModels.MusicStore;
+using MySqlX.XDevAPI;
+using UniApp.Models;
 
 namespace UniApp;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test");
-    }
+   public DbSet<Booking> Bookings { get; set; }
+   public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+   {
+      
+   }
 }

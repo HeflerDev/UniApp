@@ -17,7 +17,8 @@ public class Startup
    {
       services.AddSingleton<IRepository, Repository>();
       services.AddControllers();
-      services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+      services.AddDbContext<ApplicationDbContext>(options =>
+         options.UseSqlServer(Configuration.GetConnectionString("UniConnection")));
    }
 
    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
