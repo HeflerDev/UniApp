@@ -1,11 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.TestModels.AspNetIdentity;
-using Microsoft.EntityFrameworkCore.TestModels.MusicStore;
 using UniApp.Models;
 
 namespace UniApp;
 
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : DbContext
 {
    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
    {

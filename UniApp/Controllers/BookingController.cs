@@ -1,8 +1,5 @@
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using UniApp.Models;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.EntityFrameworkCore;
 
 namespace UniApp.Controllers;
 [Route("api/[controller]")]
@@ -13,39 +10,47 @@ public class BookingController : Controller
     public BookingController() {}
 
     [HttpGet]
-    public IEnumerable<Booking> Get()
+    public dynamic Get()
     {
-        return _context.Bookings;
-    }
-
-    [HttpGet("{id}")]
-    public IQueryable<Booking> Get(int id)
-    {
-        return _context.Bookings.Where(b => b.BookingId == id);
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<Booking>> Post(Booking booking){
-        if (ModelState.IsValid)
+        var  bookings = _context?.Bookings?.ToList();
+        if (bookings is not null)
         {
-            _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync();
-            return Ok();
+            return bookings;
         }
 
         return NotFound();
     }
 
-    [HttpPut]
-    public Booking Put([FromForm] Booking book) => _repository.UpdateBooking(book);
-
-    [HttpPatch("{id}")]
-    public StatusCodeResult Patch(int id, [FromForm] JsonPatchDocument<Booking> patch)
+    [HttpGet("{id}")]
+    public Booking Get(int id)
     {
-        Booking book = Get(id);
-        if (book != null)
+        return _context.Bookings.Single(b => b.BookingId == id);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Booking>> Post([FromBody] Booking booking){
+        if (ModelState.IsValid)
         {
-            patch.ApplyTo(book);
+            var test = _context.Bookings.Add(booking);
+            // await _context.SaveChangesAsync();
+            return booking;
+        }
+
+        return NotFound();
+    }
+
+    [HttpPut("{id}")]
+    public StatusCodeResult Put(Booking booking, int id)
+    {
+        var entity = _context.Bookings.FirstOrDefault(item => item.BookingId == id);
+
+        if (entity != null)
+        {
+            entity.Name = booking.Name;
+            entity.EndLocation = booking.EndLocation;
+            entity.StartLocation = booking.StartLocation;
+
+            _context.SaveChanges();
             return Ok();
         }
 
@@ -53,5 +58,16 @@ public class BookingController : Controller
     }
 
     [HttpDelete("{id}")]
-    public void Delete(int id) => _repository.DeleteBooking(id);
+    public StatusCodeResult Delete(int id)
+    {
+        var bookings = _context.Bookings.FirstOrDefault(b => b.BookingId == id);
+        if (bookings != null)
+        {
+            _context.Bookings.Remove(bookings);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        return NotFound();
+    }
 }

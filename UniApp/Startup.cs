@@ -14,7 +14,6 @@ public class Startup
 
    public void ConfigureServices(IServiceCollection services)
    {
-      services.AddSingleton<IRepository, Repository>();
       services.AddControllers();
       services.AddDbContext<ApplicationDbContext>(options =>
          options.UseSqlServer(Configuration.GetConnectionString("UniConnection")));
