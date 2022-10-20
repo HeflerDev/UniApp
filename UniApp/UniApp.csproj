@@ -23,4 +23,9 @@
         <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Models\Repository.cs" />
+      <Compile Remove="Models\IRepository.cs" />
+    </ItemGroup>
+
 </Project>

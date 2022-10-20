@@ -1,30 +1,40 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using UniApp.Models;
 using Microsoft.AspNetCore.JsonPatch;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace UniApp.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class BookingController : Controller
 {
-    private IRepository _repository;
-    public BookingController(IRepository repo) => _repository = repo;
+    private readonly ApplicationDbContext _context;
+    public BookingController() {}
 
     [HttpGet]
-    public IEnumerable<Booking> Get() => _repository.Bookings;
+    public IEnumerable<Booking> Get()
+    {
+        return _context.Bookings;
+    }
 
     [HttpGet("{id}")]
-    public Booking Get(int id) => _repository[id];
+    public IQueryable<Booking> Get(int id)
+    {
+        return _context.Bookings.Where(b => b.BookingId == id);
+    }
 
     [HttpPost]
-    public Booking Post([FromBody] Booking book) =>
-        _repository.AddSchedule(new Booking
+    public async Task<ActionResult<Booking>> Post(Booking booking){
+        if (ModelState.IsValid)
         {
-            Name = book.Name,
-            StartLocation = book.StartLocation,
-            EndLocation =  book.EndLocation
-        });
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        return NotFound();
+    }
 
     [HttpPut]
     public Booking Put([FromForm] Booking book) => _repository.UpdateBooking(book);

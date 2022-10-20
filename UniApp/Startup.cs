@@ -1,6 +1,5 @@
 using UniApp.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.TestModels.ConferencePlanner;
 
 namespace UniApp;
 
