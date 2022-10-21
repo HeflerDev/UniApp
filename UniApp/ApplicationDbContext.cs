@@ -9,5 +9,10 @@ public class ApplicationDbContext : DbContext
    {
      
    }
-   public DbSet<Booking> Bookings { get; set; }
+   public DbSet<Booking> Booking { get; set; }
+
+   protected override void OnModelCreating(ModelBuilder modelBuilder)
+   {
+      modelBuilder.Entity<Booking>().ToTable("Booking");
+   }
 }

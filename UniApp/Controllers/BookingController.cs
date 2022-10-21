@@ -7,12 +7,15 @@ namespace UniApp.Controllers;
 public class BookingController : Controller
 {
     private readonly ApplicationDbContext _context;
-    public BookingController() {}
+    public BookingController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
 
     [HttpGet]
     public dynamic Get()
     {
-        var  bookings = _context?.Bookings?.ToList();
+        var  bookings = _context?.Booking?.ToList();
         if (bookings is not null)
         {
             return bookings;
@@ -24,15 +27,15 @@ public class BookingController : Controller
     [HttpGet("{id}")]
     public Booking Get(int id)
     {
-        return _context.Bookings.Single(b => b.BookingId == id);
+        return _context.Booking.Single(b => b.BookingId == id);
     }
 
     [HttpPost]
     public async Task<ActionResult<Booking>> Post([FromBody] Booking booking){
         if (ModelState.IsValid)
         {
-            var test = _context.Bookings.Add(booking);
-            // await _context.SaveChangesAsync();
+            _context.Booking.Add(booking);
+            await _context.SaveChangesAsync();
             return booking;
         }
 
@@ -42,7 +45,7 @@ public class BookingController : Controller
     [HttpPut("{id}")]
     public StatusCodeResult Put(Booking booking, int id)
     {
-        var entity = _context.Bookings.FirstOrDefault(item => item.BookingId == id);
+        var entity = _context.Booking.FirstOrDefault(item => item.BookingId == id);
 
         if (entity != null)
         {
@@ -60,10 +63,10 @@ public class BookingController : Controller
     [HttpDelete("{id}")]
     public StatusCodeResult Delete(int id)
     {
-        var bookings = _context.Bookings.FirstOrDefault(b => b.BookingId == id);
+        var bookings = _context.Booking.FirstOrDefault(b => b.BookingId == id);
         if (bookings != null)
         {
-            _context.Bookings.Remove(bookings);
+            _context.Booking.Remove(bookings);
             _context.SaveChanges();
             return Ok();
         }
