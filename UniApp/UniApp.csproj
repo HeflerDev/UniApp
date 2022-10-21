@@ -24,8 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Models\Repository.cs" />
-      <Compile Remove="Models\IRepository.cs" />
+      <Compile Include="Migrations\20221021220330_InitialCreate.Designer.cs" />
     </ItemGroup>
 
 </Project>

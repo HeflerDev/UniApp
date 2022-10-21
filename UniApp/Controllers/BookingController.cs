@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using UniApp.Models;
 
 namespace UniApp.Controllers;
@@ -34,6 +35,10 @@ public class BookingController : Controller
     public async Task<ActionResult<Booking>> Post([FromBody] Booking booking){
         if (ModelState.IsValid)
         {
+            if (booking.BookingId == 0)
+            {
+                booking.BookingId = 1;
+            }
             _context.Booking.Add(booking);
             await _context.SaveChangesAsync();
             return booking;

@@ -17,6 +17,8 @@ public class Startup
       services.AddControllers();
       services.AddDbContext<ApplicationDbContext>(options =>
          options.UseSqlServer(Configuration.GetConnectionString("UniConnection")));
+      services.AddEndpointsApiExplorer();
+      services.AddSwaggerGen();
    }
 
    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -24,6 +26,8 @@ public class Startup
       if (env.IsDevelopment())
       {
          app.UseDeveloperExceptionPage();
+         app.UseSwagger();
+         app.UseSwaggerUI();
       }
 
       app.UseHttpsRedirection();
