@@ -13,11 +13,18 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "api/booking",
+      "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7083;http://localhost:5198",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "azure": {
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "commandName": "azure"
     },
     "IIS Express": {
       "commandName": "IISExpress",

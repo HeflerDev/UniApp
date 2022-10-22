@@ -34,6 +34,9 @@ public class BookingController : Controller
     public async Task<ActionResult<Booking>> Post([FromBody] Booking booking){
         if (ModelState.IsValid)
         {
+            int clientId = booking.ClientId;
+            booking.Client = _context.Client.Single(c => c.ClientId == clientId);
+            
             _context.Booking.Add(booking);
             await _context.SaveChangesAsync();
             return booking;

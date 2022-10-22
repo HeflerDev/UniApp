@@ -14,9 +14,11 @@ public class Startup
 
    public void ConfigureServices(IServiceCollection services)
    {
-      services.AddControllers();
+      services.AddControllers(opts => opts.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
       services.AddDbContext<ApplicationDbContext>(options =>
          options.UseSqlServer(Configuration.GetConnectionString("UniConnection")));
+      services.AddEndpointsApiExplorer();
+      services.AddSwaggerGen();
    }
 
    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -26,6 +28,8 @@ public class Startup
          app.UseDeveloperExceptionPage();
       }
 
+      app.UseSwagger();
+      app.UseSwaggerUI();
       app.UseHttpsRedirection();
       app.UseRouting();
       app.UseAuthorization();

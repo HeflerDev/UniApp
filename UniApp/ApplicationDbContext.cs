@@ -10,9 +10,11 @@ public class ApplicationDbContext : DbContext
      
    }
    public DbSet<Booking> Booking { get; set; }
+   public DbSet<Client> Client { get; set; }
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {
       modelBuilder.Entity<Booking>().ToTable("Booking");
+      modelBuilder.Entity<Client>().ToTable("Client");
    }
 }
